@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Questions and Answers</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #edf2f7;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 90%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        min-height: 90vh;
+      }
+
+      h1,
+      h2 {
+        color: #2c3e50;
+        margin-bottom: 0.5em;
+      }
+
+      form {
+        width: 80%;
+        margin: 20px auto;
+      }
+
+      label {
+        font-weight: 500;
+        display: block;
+        margin-bottom: 10px;
+        color: #2c3e50;
+      }
+
+      input,
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      input {
+        background-color: #edf2f7;
+        color: #2c3e50;
+      }
+
+      button {
+        background-color: #5cb85c;
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #449d44;
+      }
+
+      .result {
+        margin-top: 20px;
+      }
+
+      .generated-response {
+        color: #48bb78;
+        font-weight: 500;
+      }
+
+      /* Responsive styles */
+      @media (max-width: 920px) {
+        .container {
+          width: 95%;
+          margin-top: 10px;
+        }
+      }
+      .classy {
+        background: url(/static/images/result1.jpeg);
+        background-size: cover;
+        background-repeat: repeat;
+      }
+    </style>
+  </head>
+  <body class='{{ bg_class }}'>
+    <div class="container" style="    background-color: transparent;">
+      <h1>Add Questions and Answers</h1>
+      <form id="qa_form" method="post" action="/store">
+        <input
+          type="hidden"
+          name="doctor_id"
+          value="{{ session.user_id }}"
+          required
+        />
+        <label for="exam_name">Exam Name:</label>
+        <input type="text" id="exam_name" name="exam_name" required />
+
+        <label for="start_time">Start Time:</label>
+        <input
+          type="datetime-local"
+          id="start_time"
+          name="start_time"
+          required
+        />
+
+        <label for="start_time">End Time:</label>
+        <input type="datetime-local" id="End_time" name="End_time" required />
+
+        <label for="num_qa">Number of Q&A pairs:</label>
+        <input type="number" id="num_qa" name="num_qa" min="1" required />
+        <button type="button" onclick="createQAInputs()">
+          Create Q&A Pairs
+        </button>
+
+        <div id="qa_pairs_container"></div>
+         <label for="ran_qa" id="ran_lab" style="display: none">Number of Random Questions:</label>
+        <input type="number" id="ran_qa" name="ran_qa" min="1" required style="display: none" />
+        <!-- The button to submit the entire form including exam information and Q&A pairs -->
+        <button type="submit" id="submit_qa" style="display: none">
+          Submit Q&A Pairs
+        </button>
+      </form>
+    </div>
+
+    <script>
+      function createQAInputs() {
+        var numQA = document.getElementById("num_qa").value;
+        var container = document.getElementById("qa_pairs_container");
+        container.innerHTML = ""; // Clear existing inputs
+
+        for (var i = 1; i <= numQA; i++) {
+          var qLabel = document.createElement("label");
+          qLabel.innerText = "Question " + i;
+          var qInput = document.createElement("input");
+          qInput.type = "text";
+          qInput.name = "question_" + i;
+          qInput.required = true;
+
+          var aLabel = document.createElement("label");
+          aLabel.innerText = "Answer " + i;
+          var aInput = document.createElement("input");
+          aInput.type = "text";
+          aInput.name = "answer_" + i;
+          aInput.required = true;
+
+          container.appendChild(qLabel);
+          container.appendChild(qInput);
+          container.appendChild(aLabel);
+          container.appendChild(aInput);
+        }
+         // Show the random input only if there are Q&A pairs
+        document.getElementById("ran_qa").style.display =
+          numQA > 0 ? "block" : "none";
+
+         // Show the random input only if there are Q&A pairs
+        document.getElementById("ran_lab").style.display =
+          numQA > 0 ? "block" : "none";
+
+        // Show the submit button only if there are Q&A pairs
+        document.getElementById("submit_qa").style.display =
+          numQA > 0 ? "block" : "none";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam Center</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 20px auto;
+      }
+
+      label {
+        display: block;
+        margin-top: 20px;
+      }
+
+      input[type="text"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box; /* ensures padding doesn't affect width */
+      }
+
+      input[type="submit"] {
+        background: #5cb85c;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s ease;
+        margin-top: 20px;
+        margin-left: 80%;
+      }
+
+      input[type="submit"]:hover {
+        background: #449d44;
+      }
+
+      #result {
+        max-width: 500px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      p {
+        text-align: center;
+      }
+
+      #logout {
+        background-color: #b72e3b;
+      }
+
+      #flashes {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .classy {
+        background: url(/static/images/student.avif);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      form .cobtn{
+      background-color:#17a2b8
+      }
+       form .cobtn :hover{
+      background-color:#17a2b8
+      border-color: #17a2b8;
+      }
+    </style>
+  </head>
+  <body class='{{ bg_class }}'>
+    <h1>Exam Center</h1>
+
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <div id="flashes">
+      {% for message in messages %}
+      <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %} {% endwith %} {% if questions %}
+    <!-- Check if the questions list is not empty -->
+    <form action="{{ url_for('compare', exam_id=exam_id) }}"  method="post">
+      {% for question in questions %}
+      <label for="answer{{ loop.index }}">{{ question }}</label>
+      <input
+        type="text"
+        id="answer{{ loop.index }}"
+        name="answer{{ loop.index }}"
+        required
+      />
+      {% endfor %}
+      <input type="submit"  class="cobtn" value="Submit" />
+    </form>
+    {% else %}
+    <!-- No exams available, show logout button -->
+    <form action="/logout"  style="background-color: transparent;  "  method="post">
+      <input type="submit"  class="btn btn-info" id="logout" value="Logout" />
+    </form>
+    {% endif%}
+    <!-- Results will be displayed only after the form is submitted and if results exist -->
+    {% if results is defined and results %}
+    <div id="result">
+      {% for result in results %}
+      <p>
+        Question {{ loop.index }}: {{ result[0] }}<br />
+        Your answer: {{ result[1] }}<br />
+        Correct answer: {{ result[2] }}<br />
+        Score: {{ result[3] }}
+      </p>
+      {% endfor %}
+      <strong>Total score: {{ total_score }}</strong>
+    </div>
+    {% endif %}
+  </body>
+</html>

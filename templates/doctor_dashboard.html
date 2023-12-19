@@ -1,0 +1,70 @@
+<!-- templates/doctor_dashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctor Dashboard</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .dashboard {
+        text-align: center;
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .dashboard h1 {
+        margin-bottom: 20px;
+      }
+
+      .dashboard a {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 5px;
+        border-radius: 5px;
+        color: white;
+        text-decoration: none;
+        transition: background-color 0.3s;
+      }
+
+      .classy {
+        background: url(/static/images/student.avif);
+        background-size: cover;
+        background-repeat: repeat;
+      }
+
+    </style>
+  </head>
+  <body class=" dashboard {{ bg_class }}">
+    <div  class=" ">
+      <h1>Welcome, Doctor {{ session.name }}</h1>
+
+      <a href="{{ url_for('show_results') }}" class="btn btn-info">See Results</a>
+      <a href="{{ url_for('add') }}" class="btn btn-info">Create Exam</a>
+
+      <form action="/logout" method="post">
+        <input
+          type="submit"
+          id="logout"
+          class="btn btn btn-info"
+          value="Logout"
+        />
+      </form>
+    </div>
+  </body>
+</html>

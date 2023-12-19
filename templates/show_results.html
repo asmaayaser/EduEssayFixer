@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students Results</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        padding-top: 50px;
+        padding-bottom: 50px;
+      }
+      .container {
+        max-width: 800px;
+      }
+      .score-badge {
+        font-size: 1em;
+        font-weight: bold;
+      }
+            .classy {
+        background: url(/static/images/result1.jpeg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+    </style>
+  </head>
+  <body class='{{ bg_class }}'>
+    <div class="container">
+      <div class="text-center mb-4">
+        <h1>Results</h1>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Exam</th>
+            <th scope="col">Student</th>
+            <th scope="col">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in all_results %}
+          <tr>
+            <td>{{ result['id'] }}</td>
+            <td>{{ result['exam'] }}</td>
+            <td>{{ result['student'] }}</td>
+            <td>{{ result['degree'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="text-center mt-4">
+        <a class="btn btn-primary" href="{{ url_for('generate_report') }}">Generate Report</a>
+      </div>
+    </div>
+  </body>
+</html>
